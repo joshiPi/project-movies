@@ -1,0 +1,32 @@
+.heading {
+    background-color: #ff9999;
+    font-size: 1rem;
+    text-align: center;
+    padding: 8px;
+}
+.home-movies-root {
+    display: flex;
+    justify-content: space-around;
+    overflow: hidden;
+}
+.gridList {
+    flex-wrap: nowrap !important;
+    overflow-y: hidden !important;
+    transform: translateZ(0);
+}
+.grid-image {
+    width: 250px !important;
+    height: 250px;
+}
+.upcoming-movies {
+    display: flex;
+}
+.upcoming-movies >div {
+    margin: 16px;
+}
+.filtered-movie-section {
+    flex: 76%
+}
+.filter-movies {
+    flex: 24%
+}

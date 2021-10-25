@@ -1,0 +1,42 @@
+.header {
+    display: flex;
+    height: 36px;
+    background-color: #222;
+    padding: 8px 32px 8px 16px;
+    justify-content: space-between;
+}
+.header__logo {
+    background-color: #ff7f7f;
+    transition: all 8s linear;
+    transform: rotate();
+}
+.header__logo--image {
+    height: 36px;
+}
+.rotate {
+    animation: rotation 8s;
+  }
+  
+  .linear {
+    animation-timing-function: linear;
+  }
+  
+  .infinite {
+    animation-iteration-count: infinite;
+  }
+  
+  @keyframes rotation {
+    from {
+      transform: rotateY(0deg);
+    }
+    to {
+      transform: rotateY(360deg);
+    }
+  }
+
+  .login-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
