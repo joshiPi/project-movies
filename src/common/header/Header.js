@@ -10,6 +10,7 @@ import React, { useRef, useState } from "react";
 import logo from "./logo.svg";
 import "./Header.css";
 import Modal from "react-modal";
+import { Router as router, Redirect } from "react-router-dom";
 
 const customStyles = {
   content: {
@@ -22,10 +23,13 @@ const customStyles = {
   },
 };
 
-const Header = () => {
+const Header = (props) => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [tabValue, setTabValue] = useState(0);
-  const [userRegistered, setUserRegistered] = useState(false)
+  const [userRegistered, setUserRegistered] = useState(false);
+  const [userLoggedIn, setUserLoggedIn] = useState(
+    !!global.localStorage.getItem("login") || false
+  );
 
   function openModal() {
     setIsOpen(true);
@@ -35,39 +39,65 @@ const Header = () => {
   }
   const loginFormSubmit = (e) => {
     e.preventDefault();
-    console.log(e.target.elements.username.value, e.target.elements.password.value)
+    console.log(
+      e.target.elements.username.value,
+      e.target.elements.password.value
+    );
+    global.localStorage.setItem("login", true);
+    setIsOpen(false);
+    setUserLoggedIn(true);
     // const opts = {
 
     // }
-  }
+  };
+  const logout = () => {
+    global.localStorage.removeItem("login");
+    setUserLoggedIn(false);
+  };
+  const bookMyShow = () => {
+    if (!userLoggedIn) {
+      setIsOpen(true);
+      return;
+    }
+    console.log(8);
+    <Redirect to="/" />;
+    // router.history.push('/')
+  };
   const registerFormSubmit = (e) => {
     e.preventDefault();
     const opts = {
-      method: 'POST',
+      method: "POST",
       headers: {
         "Content-Type": "application/json;charset=UTF-8",
-        "Accept": "application/json;charset=UTF-8"
+        Accept: "application/json;charset=UTF-8",
       },
       body: JSON.stringify({
         email_address: e.target.elements.email.value,
-        first_name: e.target.elements.firstName.value, 
+        first_name: e.target.elements.firstName.value,
         last_name: e.target.elements.lastName.value,
         mobile_number: e.target.elements.contactNo.value,
         password: e.target.elements.password.value,
+      }),
+    };
+    fetch("/api/v1/signup", opts)
+      .then((data) => data.json())
+      .then((data) => {
+        console.log(data);
+        setUserRegistered(true);
+        global.localStorage.setItem("user-registered", true);
       })
-    }
-    fetch('/api/v1/signup', opts)
-    .then(data => data.json())
-    .then(data => {console.log(data);setUserRegistered(true);global.localStorage.setItem('user-registered', true)})
-    .catch(e => {console.log(e)})
-  }
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   const Form = () => {
     return (
       <div>
-      {tabValue === 0 && (
-        <form className="login-form" onSubmit={(e) => loginFormSubmit(e)}>
+        {tabValue === 0 && (
+          <form className="login-form" onSubmit={(e) => loginFormSubmit(e)}>
             <FormControl
+              required
               style={{
                 display: "block",
                 paddingBottom: "20px",
@@ -75,46 +105,56 @@ const Header = () => {
               }}
             >
               <InputLabel htmlFor="my-input">Username*</InputLabel>
-              <Input
-                id="input-required"
-                name="username"
-                key="my-input-1"
-                required
-              />
+              <Input id="input-required" name="username" key="my-input-1" />
             </FormControl>
-            <FormControl style={{ display: "block", paddingBottom: "40px" }}>
+            <FormControl
+              style={{ display: "block", paddingBottom: "40px" }}
+              required
+            >
               <InputLabel htmlFor="my-input">Password*</InputLabel>
-              <Input
-                name="password"
-                required
-              />
+              <Input name="password" />
             </FormControl>
-            <Button variant="contained" color="primary" type="submit"> 
+            <Button variant="contained" color="primary" type="submit">
               LOGIN
             </Button>
           </form>
-      )}
-      {tabValue === 1 && (
+        )}
+        {tabValue === 1 && (
           <form className="login-form" onSubmit={(e) => registerFormSubmit(e)}>
-            <FormControl style={{ display: "block", paddingBottom: "20px" }}>
+            <FormControl
+              style={{ display: "block", paddingBottom: "20px" }}
+              required
+            >
               <InputLabel htmlFor="my-input">First Name*</InputLabel>
-              <Input required name="firstName" aria-describedby="my-helper-text" />
+              <Input name="firstName" aria-describedby="my-helper-text" />
             </FormControl>
-            <FormControl style={{ display: "block", paddingBottom: "20px" }}>
+            <FormControl
+              style={{ display: "block", paddingBottom: "20px" }}
+              required
+            >
               <InputLabel htmlFor="my-input">Last Name*</InputLabel>
-              <Input required name="lastName" aria-describedby="my-helper-text" />
+              <Input name="lastName" aria-describedby="my-helper-text" />
             </FormControl>
-            <FormControl style={{ display: "block", paddingBottom: "20px" }}>
+            <FormControl
+              style={{ display: "block", paddingBottom: "20px" }}
+              required
+            >
               <InputLabel htmlFor="my-input">Email*</InputLabel>
-              <Input required name="email" aria-describedby="my-helper-text" />
+              <Input name="email" aria-describedby="my-helper-text" />
             </FormControl>
-            <FormControl style={{ display: "block", paddingBottom: "20px" }}>
+            <FormControl
+              style={{ display: "block", paddingBottom: "20px" }}
+              required
+            >
               <InputLabel htmlFor="my-input">Password*</InputLabel>
-              <Input required name="password" aria-describedby="my-helper-text" />
+              <Input name="password" aria-describedby="my-helper-text" />
             </FormControl>
-            <FormControl style={{ display: "block", paddingBottom: "40px" }}>
+            <FormControl
+              style={{ display: "block", paddingBottom: "40px" }}
+              required
+            >
               <InputLabel htmlFor="my-input">Contact No.*</InputLabel>
-              <Input required name="contactNo" aria-describedby="my-helper-text" />
+              <Input name="contactNo" aria-describedby="my-helper-text" />
             </FormControl>
             <Button variant="contained" color="primary" type="submit">
               REGISTER
@@ -122,8 +162,8 @@ const Header = () => {
           </form>
         )}
       </div>
-    )
-  }
+    );
+  };
   const AuthenticationModal = () => {
     return (
       <Modal
@@ -140,64 +180,7 @@ const Header = () => {
           <Tab label="LOGIN" />
           <Tab label="REGISTER" />
         </Tabs>
-        <Form  key="my-super-form"/>
-        {/* {tabValue === 0 && (
-          <form className="login-form" onSubmit={(e) => {console.log(e);formSubmit(e)}}>
-            <FormControl
-              style={{
-                display: "block",
-                paddingBottom: "20px",
-                marginTop: "20px",
-              }}
-            >
-              <InputLabel htmlFor="my-input">Username*</InputLabel>
-              <Input
-                id="my-input"
-                defaultValue={userName}
-                key="user-input"
-                onChange={(e) => setUserName(e.target.value)}
-              />
-            </FormControl>
-            <FormControl style={{ display: "block", paddingBottom: "40px" }}>
-              <InputLabel htmlFor="my-input">Password*</InputLabel>
-              <Input
-                id="my-input"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </FormControl>
-            <Button variant="contained" color="primary" onClick={loginHandler}> 
-              LOGIN
-            </Button>
-          </form>
-        )}
-        {tabValue === 1 && (
-          <div className="login-form">
-            <FormControl style={{ display: "block", paddingBottom: "20px" }}>
-              <InputLabel htmlFor="my-input">First Name*</InputLabel>
-              <Input id="my-input" aria-describedby="my-helper-text" />
-            </FormControl>
-            <FormControl style={{ display: "block", paddingBottom: "20px" }}>
-              <InputLabel htmlFor="my-input">Last Name*</InputLabel>
-              <Input id="my-input" aria-describedby="my-helper-text" />
-            </FormControl>
-            <FormControl style={{ display: "block", paddingBottom: "20px" }}>
-              <InputLabel htmlFor="my-input">Email*</InputLabel>
-              <Input id="my-input" aria-describedby="my-helper-text" />
-            </FormControl>
-            <FormControl style={{ display: "block", paddingBottom: "20px" }}>
-              <InputLabel htmlFor="my-input">Password*</InputLabel>
-              <Input id="my-input" aria-describedby="my-helper-text" />
-            </FormControl>
-            <FormControl style={{ display: "block", paddingBottom: "40px" }}>
-              <InputLabel htmlFor="my-input">Contact No.*</InputLabel>
-              <Input id="my-input" aria-describedby="my-helper-text" />
-            </FormControl>
-            <Button variant="contained" color="primary">
-              REGISTER
-            </Button>
-          </div>
-        )} */}
+        <Form />
       </Modal>
     );
   };
@@ -208,17 +191,26 @@ const Header = () => {
       </div>
       <AuthenticationModal />
       <div className="header__buttons">
-        <Button
-          variant="contained"
-          color="primary"
-          style={{ marginRight: "8px" }}
-        >
-          Book Show
-        </Button>
-        <Button variant="contained" onClick={openModal}>
-          LOGIN
-        </Button>
-        {false && <Button variant="contained">LOGOUT</Button>}
+        {window.location.pathname.includes("movie") && (
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ marginRight: "8px" }}
+            onClick={bookMyShow}
+          >
+            Book Show
+          </Button>
+        )}
+        {userLoggedIn && (
+          <Button variant="contained" onClick={logout}>
+            LOGOUT
+          </Button>
+        )}
+        {!userLoggedIn && (
+          <Button variant="contained" onClick={openModal}>
+            LOGIN
+          </Button>
+        )}
       </div>
     </div>
   );
