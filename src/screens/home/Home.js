@@ -62,7 +62,6 @@ const Home = () => {
           end_dat: releaseDateEnd,
         },
       };
-      console.log(encode(opts.params))
       fetch(`/api/v1/movies?${encode(opts.params)}`)
         .then((data) => data.json())
         .then((data) => setDataRelease(data.movies))
