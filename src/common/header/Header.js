@@ -5,12 +5,13 @@ import {
   FormControl,
   Input,
   InputLabel,
+  Typography,
 } from "@material-ui/core";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import logo from "./logo.svg";
 import "./Header.css";
 import Modal from "react-modal";
-import { Router as router, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const customStyles = {
   content: {
@@ -39,10 +40,10 @@ const Header = (props) => {
   }
   const loginFormSubmit = (e) => {
     e.preventDefault();
-    console.log(
-      e.target.elements.username.value,
-      e.target.elements.password.value
-    );
+    // console.log(
+    //   e.target.elements.username.value,
+    //   e.target.elements.password.value
+    // );
     global.localStorage.setItem("login", true);
     setIsOpen(false);
     setUserLoggedIn(true);
@@ -102,14 +103,14 @@ const Header = (props) => {
                 marginTop: "20px",
               }}
             >
-              <InputLabel htmlFor="my-input">Username*</InputLabel>
+              <InputLabel htmlFor="my-input">Username</InputLabel>
               <Input id="input-required" name="username" key="my-input-1" />
             </FormControl>
             <FormControl
               style={{ display: "block", paddingBottom: "40px" }}
               required
             >
-              <InputLabel htmlFor="my-input">Password*</InputLabel>
+              <InputLabel htmlFor="my-input">Password</InputLabel>
               <Input name="password" />
             </FormControl>
             <Button variant="contained" color="primary" type="submit">
@@ -123,37 +124,40 @@ const Header = (props) => {
               style={{ display: "block", paddingBottom: "20px" }}
               required
             >
-              <InputLabel htmlFor="my-input">First Name*</InputLabel>
+              <InputLabel htmlFor="my-input">First Name</InputLabel>
               <Input name="firstName" aria-describedby="my-helper-text" />
             </FormControl>
             <FormControl
               style={{ display: "block", paddingBottom: "20px" }}
               required
             >
-              <InputLabel htmlFor="my-input">Last Name*</InputLabel>
+              <InputLabel htmlFor="my-input">Last Name</InputLabel>
               <Input name="lastName" aria-describedby="my-helper-text" />
             </FormControl>
             <FormControl
               style={{ display: "block", paddingBottom: "20px" }}
               required
             >
-              <InputLabel htmlFor="my-input">Email*</InputLabel>
+              <InputLabel htmlFor="my-input">Email</InputLabel>
               <Input name="email" aria-describedby="my-helper-text" />
             </FormControl>
             <FormControl
               style={{ display: "block", paddingBottom: "20px" }}
               required
             >
-              <InputLabel htmlFor="my-input">Password*</InputLabel>
+              <InputLabel htmlFor="my-input">Password</InputLabel>
               <Input name="password" aria-describedby="my-helper-text" />
             </FormControl>
             <FormControl
               style={{ display: "block", paddingBottom: "40px" }}
               required
             >
-              <InputLabel htmlFor="my-input">Contact No.*</InputLabel>
+              <InputLabel htmlFor="my-input">Contact No.</InputLabel>
               <Input name="contactNo" aria-describedby="my-helper-text" />
             </FormControl>
+            {userRegistered && (
+              <Typography style={{marginTop: '-20px', marginBottom: '20px'}}>Registration successful. Please Login!</Typography>
+            )}
             <Button variant="contained" color="primary" type="submit">
               REGISTER
             </Button>
@@ -185,7 +189,7 @@ const Header = (props) => {
   return (
     <div className="header">
       <div className="header__logo rotate linear infinite">
-        <img className="header__logo--image" src={logo} />
+        <img className="header__logo--image" src={logo} alt="header-logo" />
       </div>
       <AuthenticationModal />
       <div className="header__buttons">
@@ -196,7 +200,14 @@ const Header = (props) => {
             style={{ marginRight: "8px" }}
             onClick={bookMyShow}
           >
-            {userLoggedIn && <Link style={{textDecoration: "none", color: "white"}} to={`/bookshow/${window.location.pathname.split('/').pop()}`}>Book Show</Link>}
+            {userLoggedIn && (
+              <Link
+                style={{ textDecoration: "none", color: "white" }}
+                to={`/bookshow/${window.location.pathname.split("/").pop()}`}
+              >
+                Book Show
+              </Link>
+            )}
             {!userLoggedIn && "Book Show"}
           </Button>
         )}
