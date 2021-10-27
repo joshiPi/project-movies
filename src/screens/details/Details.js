@@ -96,23 +96,23 @@ const Details = () => {
             </Typography>
             <StarBorderIcon
               onClick={() => setStars(1)}
-              nativeColor={stars >= 1 && stars != 0 ? "yellow" : "black"}
+              nativeColor={stars >= 1 && stars !== 0 ? "yellow" : "black"}
             />
             <StarBorderIcon
               onClick={() => setStars(2)}
-              nativeColor={stars >= 2 && stars != 0 ? "yellow" : "black"}
+              nativeColor={stars >= 2 && stars !== 0 ? "yellow" : "black"}
             />
             <StarBorderIcon
               onClick={() => setStars(3)}
-              nativeColor={stars >= 3 && stars != 0 ? "yellow" : "black"}
+              nativeColor={stars >= 3 && stars !== 0 ? "yellow" : "black"}
             />
             <StarBorderIcon
               onClick={() => setStars(4)}
-              nativeColor={stars >= 4 && stars != 0 ? "yellow" : "black"}
+              nativeColor={stars >= 4 && stars !== 0 ? "yellow" : "black"}
             />
             <StarBorderIcon
               onClick={() => setStars(5)}
-              nativeColor={stars >= 5 && stars != 0 ? "yellow" : "black"}
+              nativeColor={stars >= 5 && stars !== 0 ? "yellow" : "black"}
             />
           </div>
           <div style={{ marginTop: "16px" }}>
