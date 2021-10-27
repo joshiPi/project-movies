@@ -10,7 +10,7 @@ import React, { useRef, useState } from "react";
 import logo from "./logo.svg";
 import "./Header.css";
 import Modal from "react-modal";
-import { Router as router, Redirect } from "react-router-dom";
+import { Router as router, Link } from "react-router-dom";
 
 const customStyles = {
   content: {
@@ -59,8 +59,6 @@ const Header = (props) => {
       setIsOpen(true);
       return;
     }
-    console.log(8);
-    <Redirect to="/" />;
     // router.history.push('/')
   };
   const registerFormSubmit = (e) => {
@@ -198,7 +196,8 @@ const Header = (props) => {
             style={{ marginRight: "8px" }}
             onClick={bookMyShow}
           >
-            Book Show
+            {userLoggedIn && <Link style={{textDecoration: "none", color: "white"}} to={`/bookshow/${window.location.pathname.split('/').pop()}`}>Book Show</Link>}
+            {!userLoggedIn && "Book Show"}
           </Button>
         )}
         {userLoggedIn && (
